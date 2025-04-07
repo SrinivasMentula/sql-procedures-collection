@@ -1,4 +1,11 @@
-create or alter proc dbo.usp_SalesReport 
+/****** Object:  StoredProcedure [dbo].[usp_SalesReport]    Script Date: 4/7/2025 4:08:04 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create or alter  proc [dbo].[usp_SalesReport] 
 as 
 	begin 
 		set nocount on
@@ -13,8 +20,7 @@ as
 		begin try 
 			begin tran salesReport
 		/* Temp_table creation for the  BaseCalucaltions*/
-			if   OBJECT_ID('temp..#temp_1') is not null
-							drop table  #temp_t1
+			drop table if exists #temp_1
 						
 						create table #temp_1
 						(
@@ -163,8 +169,8 @@ as
 							city
 
 					/*creation of temp table for getting the Product Line which has highest sales */
-						if   OBJECT_ID('tempdb..#temp_t2') is not null
-							drop table  #temp_t2
+						drop table if exists #temp_t2
+
 						create table #temp_t2 (
 							sales_Date date,
 							branch varchar(20),
@@ -173,9 +179,11 @@ as
 							"ProductRank" int
 
 						)
-
-						create nonclustered index  idx_#tem_t2_SalesDate_branch_city_productLine on #temp_t2 (sales_date,branch,"ProductRank" )
-						include(productLine);
+					
+						CREATE NONCLUSTERED INDEX idx_temp_t2_rank1
+						ON #temp_t2 (sales_date, branch)
+						INCLUDE (productLine)
+						WHERE ProductRank = 1
 
 						insert into #temp_t2
 							(
@@ -255,53 +263,53 @@ as
 
 						select 
 							distinct
-							t1.Sales_Date,
-							t1.Branch,
-							t1.City,
-							t1.Total_Sales,
-							t1.Total_Transactions,
-							t1.Average_Basket_Value,
-							t2.productLine as Top_Selling_Product_Line,
-							t1.Member_COUNT,
-							t1.Normal_COUNT,
-							t1.Payment_Cash,
-							t1.Payment_Credit,
-							t1.Payment_Ewallet,
-							t1.Sales_Male,
-							t1.Sales_Female,
-							t1.Total_Quantity_Sold,
-							t1.Average_Rating,
-							t1.GrossIncome,
-							Total_COGS,
-							t1.Gross_Margin_Percentage,
-							t1.HOUR_00,
-							t1.HOUR_01,
-							t1.HOUR_02,
-							t1.HOUR_03,
-							t1.HOUR_04,
-							t1.HOUR_05,
-							t1.HOUR_06,
-							t1.HOUR_07,
-							t1.HOUR_08,
-							t1.HOUR_09,
-							t1.HOUR_10,
-							t1.HOUR_11,
-							t1.HOUR_12,
-							t1.HOUR_13,
-							t1.HOUR_14,
-							t1.HOUR_15,
-							t1.HOUR_16,
-							t1.HOUR_17,
-							t1.HOUR_18,
-							t1.HOUR_19,
-							t1.HOUR_20,
-							t1.HOUR_21,
-							t1.HOUR_22,
-							t1.HOUR_23
+							t1.sales_date,
+							t1.branch,
+							t1.city,
+							t1.total_sales,
+							t1.total_transactions,
+							t1.average_basket_value,
+							t2.productline as top_selling_product_line,
+							t1.member_count,
+							t1.normal_count,
+							t1.payment_cash,
+							t1.payment_credit,
+							t1.payment_ewallet,
+							t1.sales_male,
+							t1.sales_female,
+							t1.total_quantity_sold,
+							t1.average_rating,
+							t1.grossincome,
+							total_cogs,
+							t1.gross_margin_percentage,
+							t1.hour_00,
+							t1.hour_01,
+							t1.hour_02,
+							t1.hour_03,
+							t1.hour_04,
+							t1.hour_05,
+							t1.hour_06,
+							t1.hour_07,
+							t1.hour_08,
+							t1.hour_09,
+							t1.hour_10,
+							t1.hour_11,
+							t1.hour_12,
+							t1.hour_13,
+							t1.hour_14,
+							t1.hour_15,
+							t1.hour_16,
+							t1.hour_17,
+							t1.hour_18,
+							t1.hour_19,
+							t1.hour_20,
+							t1.hour_21,
+							t1.hour_22,
+							t1.hour_23
 						from #temp_1 t1 
 						left outer join #temp_t2 t2 
-							on t1.sales_date = t2.sales_Date and t1.Branch = t2.branch
-						where t2.ProductRank= 1
+							on t1.sales_date = t2.sales_date and t1.branch = t2.branch
+						where t2.productrank= 1
 						
 						set @row_COUNT = @@ROWCOUNT
 
@@ -358,5 +366,6 @@ as
 				throw;
 		END catch;
 	END;
+
 
 

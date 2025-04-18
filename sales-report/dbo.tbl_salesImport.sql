@@ -7,7 +7,7 @@ GO
 
 CREATE TABLE [dbo].[tbl_salesImport](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[InvoiceID] [varchar](100) NULL,
+	[InvoiceID] [varchar](200) NULL,
 	[Branch] [varchar](5) NULL,
 	[City] [varchar](100) NULL,
 	[Customer] [varchar](100) NULL,

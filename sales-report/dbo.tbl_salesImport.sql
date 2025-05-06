@@ -9,7 +9,7 @@ CREATE TABLE [dbo].[tbl_salesImport](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[InvoiceID] [varchar](100) NULL,
 	[Branch] [varchar](5) NULL,
-	[City] [varchar](100) NULL,
+	[City] [varchar](200) NULL,
 	[Customer] [varchar](100) NULL,
 	[Gender] [varchar](10) NULL,
 	[productLine] [varchar](100) NULL,

@@ -4,7 +4,7 @@ use [sample_one]
 
      Created BY : Srinivas Mentula
 	 Created_On: 09/17/2025
-     Pupose :   Filter the valid PAN nu,mbers only 
+     Purpose :   Filter the valid PAN nu,mbers only 
 */
 
 IF EXISTS (
@@ -111,4 +111,5 @@ begin
 		end 
 		 return  @validation_variable;
 end
+
 
